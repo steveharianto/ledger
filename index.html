@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ledger — Main Financial Tracker</title>
+
+  <!-- Fonts: Fraunces (display) · Hanken Grotesk (body) · JetBrains Mono (numerals) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind (utility layer) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0E0F11',
+            panel: '#16181C',
+            raise: '#1C1F24',
+            line: '#26292F',
+            paper: '#ECEAE4',
+            muted: '#8B8F98',
+            brass: '#C8A24B',
+            up: '#5BBE8A',
+            down: '#E26D5A',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'serif'],
+            body: ['"Hanken Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-ink text-paper font-body antialiased">
+  <!-- ============================== AUTH OVERLAY ============================== -->
+  <div id="auth-overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/95 backdrop-blur-sm">
+    <div class="auth-card w-full max-w-sm mx-4 rounded-xl border border-line bg-panel p-8">
+      <p class="eyebrow mb-2">Personal finance, kept honest</p>
+      <h1 class="font-display text-4xl font-medium tracking-tight mb-1">Ledger</h1>
+      <p id="auth-subtitle" class="text-sm text-muted mb-6">Sign in to open your books.</p>
+
+      <form id="auth-form" class="space-y-4">
+        <div>
+          <label for="auth-email" class="field-label">Email</label>
+          <input id="auth-email" type="email" required autocomplete="email" class="field-input" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label for="auth-password" class="field-label">Password</label>
+          <input id="auth-password" type="password" required minlength="6" autocomplete="current-password" class="field-input" placeholder="••••••••" />
+        </div>
+        <p id="auth-error" class="hidden text-sm text-down"></p>
+        <button id="auth-submit" type="submit" class="btn-primary w-full">Sign in</button>
+      </form>
+
+      <p class="mt-5 text-center text-sm text-muted">
+        <span id="auth-toggle-label">New here?</span>
+        <button id="auth-toggle" type="button" class="link-brass ml-1">Create an account</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================== APP SHELL ============================== -->
+  <div id="app-shell" class="hidden min-h-screen md:flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar md:w-60 md:min-h-screen border-b md:border-b-0 md:border-r border-line bg-panel flex md:flex-col">
+      <div class="hidden md:block px-6 pt-7 pb-5 border-b border-line">
+        <h1 class="font-display text-2xl font-medium tracking-tight">Ledger</h1>
+        <p id="sidebar-user" class="mt-1 text-xs text-muted truncate"></p>
+      </div>
+
+      <nav id="nav" class="flex md:flex-col flex-1 overflow-x-auto md:overflow-x-visible md:py-3">
+        <a href="#dashboard" data-route="dashboard" class="nav-link"><span class="nav-glyph">◆</span>Dashboard</a>
+        <a href="#accounts"  data-route="accounts"  class="nav-link"><span class="nav-glyph">▥</span>Accounts</a>
+        <a href="#categories" data-route="categories" class="nav-link"><span class="nav-glyph">⌥</span>Categories</a>
+        <a href="#assets"    data-route="assets"    class="nav-link"><span class="nav-glyph">◈</span>Assets</a>
+        <a href="#debts"     data-route="debts"     class="nav-link"><span class="nav-glyph">⇆</span>Debts</a>
+        <a href="#logs"      data-route="logs"      class="nav-link"><span class="nav-glyph">≣</span>Logs</a>
+      </nav>
+
+      <div class="hidden md:block px-6 py-4 border-t border-line">
+        <button id="btn-signout" type="button" class="text-sm text-muted hover:text-paper transition-colors">Sign out</button>
+      </div>
+    </aside>
+
+    <!-- Main view -->
+    <main class="flex-1 min-w-0">
+      <div id="view-content" class="mx-auto max-w-6xl px-4 sm:px-8 py-8"></div>
+    </main>
+  </div>
+
+  <!-- ============================== MODAL ROOT ============================== -->
+  <div id="modal-root" class="fixed inset-0 z-40 hidden items-center justify-center bg-ink/80 backdrop-blur-sm p-4">
+    <div id="modal-card" class="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-xl border border-line bg-panel p-6"></div>
+  </div>
+
+  <!-- ============================== TOAST ROOT ============================== -->
+  <div id="toast-root" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 items-end"></div>
+
+  <!-- App entry -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
